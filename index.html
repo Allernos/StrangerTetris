@@ -464,48 +464,39 @@
         let rAF2 = null;
         let gameOver2 = false;
         let count2 = 0;
-
-       //Função para gerar o Loop de iniciação do jogo
-         const loopTelaDois = () => {
-           rAF2 = requestAnimationFrame(loopTelaDois);
-           contex2.clearRect(0,0, canvas2.width, canva2. height);
-
-           playfield2.forEach((row, rowIndex) => {
-             if (cell) {
-               context2.fillStyle = colors2[cell];
-               context2.fillRect(conlIndex * grid2, rowIndex * grid2, grid2, grid2);
-             }
-           });
-         });
-
-         if (tetromino2) {
-           if (++count2 >30) {
-             const newRow = tetromino2.row -1;
-             count2 = 0;
-
-             if (isValidMove2(tetromino2.matrix, newRow, tetromino2.col)) {
-               tetromino2.row = newRow;
-             } else {
-               placeTetromino2();
-             }
-           }
-
-           context2.fillStyle = colors2[tetromino2.name];
-
-           tetromino2.matrix.forEach((row, rowIndex) => {
-             row.forEach((val, colIndex) => {
-               if (val) {
-                 context2. fillRect(
-                   (tetromino2.col + colIndex) * grid2,
-                   (tetromino2.row + rowIndex) * grid2,
-                   grid2,
-                   grid2
-                  );
-                 }
-             });
-           });
-         }
-       };
+       
+       //função para movimentação das peças do Tetris, Ela recebe uma verificação passando pelo Validador de Movimento (isValidMove2)
+        document.addEventListener('keydown', (e) => {
+          if (gameOver2) return;
+      
+          const col = tetromino2.col;
+          const row = tetromino2.row;
+      
+          if (e.key === 'ArrowLeft') {
+            const newCol = col - 1;
+            if (isValidMove2(tetromino2.matrix, row, newCol)) {
+              tetromino2.col = newCol;
+            }
+          } else if (e.key === 'ArrowRight') {
+            const newCol = col + 1;
+            if (isValidMove2(tetromino2.matrix, row, newCol)) {
+              tetromino2.col = newCol;
+            }
+          } else if (e.key === 'ArrowUp') {
+            const rotatedMatrix = rotateAntiClockwise2(tetromino2.matrix);
+            if (isValidMove2(rotatedMatrix, row, col)) {
+              tetromino2.matrix = rotatedMatrix;
+            }
+          } else if (e.key === 'ArrowDown') {
+            const newRow = row - 1;
+            if (isValidMove2(tetromino2.matrix, newRow, col)) {
+              tetromino2.row = newRow;
+            }
+          }
+        });
+       
+        let pontos2 = 0; //variavel para contar os pontos da Tela2
+       
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
